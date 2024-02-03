@@ -27,7 +27,6 @@ jobs:
 
     - name: Cache dependencies
       uses: actions/cache@v2
-      working-directory: ./demo
       with:
         path: |
           **/node_modules
@@ -44,6 +43,7 @@ jobs:
     #   uses: codecov/codecov-action@v1
 
     - name: Build
+      working-directory: ./demo
       run: yarn build
 
     - name: Deploy frontend using Github Pages
