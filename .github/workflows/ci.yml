@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions:                # Job-level permissions configuration starts here
+      contents: write           # 'write' access to repository contents
+      pull-requests: write      # 'write' access to pull requests
 
     strategy:
       matrix:
@@ -45,14 +48,16 @@ jobs:
     - name: Build
       run: yarn build
 
-    # - name: Deploy
-    #   run: |
-    #     git config --global user.name $user_name
-    #     git config --global user.email $user_email
-    #     git remote set-url origin https://${github_token}@github.com/${repository}
-    #     npm run deploy
-    #   env:
-    #     user_name: 'github-actions[bot]'
-    #     user_email: 'github-actions[bot]@users.noreply.github.com'
-    #     github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-    #     repository: ${{ github.repository }}
+    - name: Deploy frontend using Github Pages
+      uses: ad-m/github-push-action@v0.8.0
+      with:
+        # Token for the repo
+        # Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        # Destination branch to push changes
+        branch: gh-pages-demo
+        # Use force push to fully overwrite the destination branch
+        force: true
+        # We have to push from the folder where files were generated.
+        # Same were the new repo was initialized in the previous step
+        directory: ./demo/build

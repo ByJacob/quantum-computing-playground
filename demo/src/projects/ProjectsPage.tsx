@@ -3,21 +3,22 @@ import ProjectList from './ProjectList';
 import { Project } from './Project';
 import { projectAPI } from './projectAPI';
 import ProjectListSkeleton from './ProjectListSkeleton';
+import { MOCK_PROJECTS } from './MockProjects';
 
 function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>(MOCK_PROJECTS);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
 
   const saveProject = (project: Project) => {
-    projectAPI.put(project)
-      .then((updatedProject) => {
-        let updatedProjects = projects.map((p: Project) => {
-          return p.id === project.id ? new Project(updatedProject) : p;
-        });
-        setProjects(updatedProjects);
-      })
+    // projectAPI.put(project)
+    //   .then((updatedProject) => {
+    //     let updatedProjects = projects.map((p: Project) => {
+    //       return p.id === project.id ? new Project(updatedProject) : p;
+    //     });
+    //     setProjects(updatedProjects);
+    //   })
   }
 
   const handleMoreClick = () => {
@@ -27,21 +28,21 @@ function ProjectsPage() {
   useEffect(() => {
     setLoading(true);
     try {
-      projectAPI.get(currentPage, 5)
-        .then((data) => {
-          setError(undefined);
-          if (currentPage === 1) {
-            setProjects(data)
-          } else {
-            setProjects((projects) => {
-              return [...projects, ...data];
-            })
-          }
-        })
-        .catch((e) => {
-          console.log('Loading false');
-          setError(e.message);
-        })
+      // projectAPI.get(currentPage, 5)
+      //   .then((data) => {
+      //     setError(undefined);
+      //     if (currentPage === 1) {
+      //       setProjects(data)
+      //     } else {
+      //       setProjects((projects) => {
+      //         return [...projects, ...data];
+      //       })
+      //     }
+      //   })
+      //   .catch((e) => {
+      //     console.log('Loading false');
+      //     setError(e.message);
+      //   })
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message)
