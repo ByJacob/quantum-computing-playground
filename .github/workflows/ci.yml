@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  cicd:
 
     runs-on: ubuntu-latest
     permissions:                # Job-level permissions configuration starts here
@@ -46,12 +46,18 @@ jobs:
       working-directory: ./demo
       run: yarn build
 
+    - name: Init new repo in dist folder and commit generated files
+      run: |
+        cd ./demo/build
+        git init
+        git add -A
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m 'deploy'
+
     - name: Deploy frontend using Github Pages
       uses: ad-m/github-push-action@v0.8.0
       with:
-        # Token for the repo
-        # Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
         # Destination branch to push changes
         branch: gh-pages-demo
         # Use force push to fully overwrite the destination branch
