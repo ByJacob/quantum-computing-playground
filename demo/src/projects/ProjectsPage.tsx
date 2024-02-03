@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProjectList from './ProjectList';
 import { Project } from './Project';
-import { projectAPI } from './projectAPI';
+// import { projectAPI } from './projectAPI';
 import ProjectListSkeleton from './ProjectListSkeleton';
 import { MOCK_PROJECTS } from './MockProjects';
 
@@ -12,6 +12,10 @@ function ProjectsPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const saveProject = (project: Project) => {
+    let updatedProjects = projects.map((p: Project) => {
+      return p.id === project.id ? new Project(project) : p;
+    });
+    setProjects(updatedProjects);
     // projectAPI.put(project)
     //   .then((updatedProject) => {
     //     let updatedProjects = projects.map((p: Project) => {
