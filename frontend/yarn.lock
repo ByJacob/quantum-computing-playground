@@ -4414,22 +4414,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tabler/icons-react@npm:^2.40.0":
-  version: 2.40.0
-  resolution: "@tabler/icons-react@npm:2.40.0"
+"@tabler/icons-react@npm:^2.47.0":
+  version: 2.47.0
+  resolution: "@tabler/icons-react@npm:2.47.0"
   dependencies:
-    "@tabler/icons": "npm:2.40.0"
+    "@tabler/icons": "npm:2.47.0"
     prop-types: "npm:^15.7.2"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0
-  checksum: 3deb43e6d474ff2d09ff941d3d8b66c8898b08c25b5cd7c3b3cb693fc88ede9404e06950647083db3287f7ae361495bbb99b828466f458d57ef4f16cbbb89d27
+  checksum: 09a78a1b88aab69a11cd783c7d1bb75aeabe2ed03e3f957d00113dfde974ec73ee850551c430664634469ebcf32db749497a81bd30c01f2fb3425884cba7429c
   languageName: node
   linkType: hard
 
-"@tabler/icons@npm:2.40.0":
-  version: 2.40.0
-  resolution: "@tabler/icons@npm:2.40.0"
-  checksum: a59adf9b071fb3b54f507c3a7c8adaeb74ccb5af5834c92d312829f7564f1e4255086091fe43dbfeae256510d073bce8476f2171655b337050b08b7521786400
+"@tabler/icons@npm:2.47.0":
+  version: 2.47.0
+  resolution: "@tabler/icons@npm:2.47.0"
+  checksum: ffdffa1289ca958f7d7c06c19e35c51a664d916df510fb44fb673abc2031747f2b3c47e21ba4c1ca07a6872b793f2063179bbbfb6afd1c68b522ca333460a7f3
   languageName: node
   linkType: hard
 
@@ -11338,59 +11338,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mantine-next-template@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "mantine-next-template@workspace:."
-  dependencies:
-    "@babel/core": "npm:^7.23.2"
-    "@mantine/core": "npm:7.5.1"
-    "@mantine/hooks": "npm:7.5.1"
-    "@next/bundle-analyzer": "npm:^14.0.1"
-    "@next/eslint-plugin-next": "npm:^14.0.1"
-    "@storybook/addon-essentials": "npm:^7.5.2"
-    "@storybook/addon-styling-webpack": "npm:^0.0.5"
-    "@storybook/blocks": "npm:^7.5.2"
-    "@storybook/nextjs": "npm:^7.5.2"
-    "@storybook/react": "npm:^7.5.2"
-    "@tabler/icons-react": "npm:^2.40.0"
-    "@testing-library/dom": "npm:^9.3.3"
-    "@testing-library/jest-dom": "npm:^6.1.4"
-    "@testing-library/react": "npm:^14.0.0"
-    "@testing-library/user-event": "npm:^14.5.1"
-    "@types/jest": "npm:^29.5.7"
-    "@types/node": "npm:^20.8.10"
-    "@types/react": "npm:18.2.34"
-    "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
-    "@typescript-eslint/parser": "npm:^6.9.1"
-    babel-loader: "npm:^9.1.3"
-    eslint: "npm:^8.53.0"
-    eslint-config-airbnb: "npm:19.0.4"
-    eslint-config-airbnb-typescript: "npm:^17.1.0"
-    eslint-config-mantine: "npm:3.0.0"
-    eslint-plugin-import: "npm:^2.29.0"
-    eslint-plugin-jest: "npm:^27.6.0"
-    eslint-plugin-jsx-a11y: "npm:^6.8.0"
-    eslint-plugin-react: "npm:^7.33.2"
-    eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-testing-library: "npm:^6.1.0"
-    jest: "npm:^29.7.0"
-    jest-environment-jsdom: "npm:^29.7.0"
-    next: "npm:14.0.1"
-    postcss: "npm:^8.4.31"
-    postcss-preset-mantine: "npm:1.13.0"
-    postcss-simple-vars: "npm:^7.0.1"
-    prettier: "npm:^3.0.3"
-    react: "npm:18.2.0"
-    react-dom: "npm:18.2.0"
-    storybook: "npm:^7.5.2"
-    storybook-dark-mode: "npm:^3.0.1"
-    stylelint: "npm:^15.11.0"
-    stylelint-config-standard-scss: "npm:^11.1.0"
-    ts-jest: "npm:^29.1.1"
-    typescript: "npm:5.2.2"
-  languageName: unknown
-  linkType: soft
-
 "map-obj@npm:^1.0.0":
   version: 1.0.1
   resolution: "map-obj@npm:1.0.1"
@@ -13072,6 +13019,59 @@ __metadata:
   checksum: 4f95d4ff18ed480befcafa3390022817ffd3087fc65f146cceb40fc5edb9fa96cb31f648cae2fa96ca23818f0798bd63ad4ca369a0e22702fcd41379b3ab6571
   languageName: node
   linkType: hard
+
+"quantum-computing-playground@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "quantum-computing-playground@workspace:."
+  dependencies:
+    "@babel/core": "npm:^7.23.2"
+    "@mantine/core": "npm:7.5.1"
+    "@mantine/hooks": "npm:7.5.1"
+    "@next/bundle-analyzer": "npm:^14.0.1"
+    "@next/eslint-plugin-next": "npm:^14.0.1"
+    "@storybook/addon-essentials": "npm:^7.5.2"
+    "@storybook/addon-styling-webpack": "npm:^0.0.5"
+    "@storybook/blocks": "npm:^7.5.2"
+    "@storybook/nextjs": "npm:^7.5.2"
+    "@storybook/react": "npm:^7.5.2"
+    "@tabler/icons-react": "npm:^2.47.0"
+    "@testing-library/dom": "npm:^9.3.3"
+    "@testing-library/jest-dom": "npm:^6.1.4"
+    "@testing-library/react": "npm:^14.0.0"
+    "@testing-library/user-event": "npm:^14.5.1"
+    "@types/jest": "npm:^29.5.7"
+    "@types/node": "npm:^20.8.10"
+    "@types/react": "npm:18.2.34"
+    "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
+    "@typescript-eslint/parser": "npm:^6.9.1"
+    babel-loader: "npm:^9.1.3"
+    eslint: "npm:^8.53.0"
+    eslint-config-airbnb: "npm:19.0.4"
+    eslint-config-airbnb-typescript: "npm:^17.1.0"
+    eslint-config-mantine: "npm:3.0.0"
+    eslint-plugin-import: "npm:^2.29.0"
+    eslint-plugin-jest: "npm:^27.6.0"
+    eslint-plugin-jsx-a11y: "npm:^6.8.0"
+    eslint-plugin-react: "npm:^7.33.2"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
+    eslint-plugin-testing-library: "npm:^6.1.0"
+    jest: "npm:^29.7.0"
+    jest-environment-jsdom: "npm:^29.7.0"
+    next: "npm:14.0.1"
+    postcss: "npm:^8.4.31"
+    postcss-preset-mantine: "npm:1.13.0"
+    postcss-simple-vars: "npm:^7.0.1"
+    prettier: "npm:^3.0.3"
+    react: "npm:18.2.0"
+    react-dom: "npm:18.2.0"
+    storybook: "npm:^7.5.2"
+    storybook-dark-mode: "npm:^3.0.1"
+    stylelint: "npm:^15.11.0"
+    stylelint-config-standard-scss: "npm:^11.1.0"
+    ts-jest: "npm:^29.1.1"
+    typescript: "npm:5.2.2"
+  languageName: unknown
+  linkType: soft
 
 "querystring-es3@npm:^0.2.1":
   version: 0.2.1
