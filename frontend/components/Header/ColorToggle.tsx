@@ -4,7 +4,6 @@ import { IconMoonStars, IconSun, IconSettingsAutomation } from '@tabler/icons-re
 export function ColorToggle() {
   const theme = useMantineTheme();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
-
   const iconProps = {
     style: { width: rem(16), height: rem(16) },
     stroke: 2.5,
