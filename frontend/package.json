@@ -3,29 +3,34 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "yarn i18n && next dev",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "lint": "next lint && npm run lint:stylelint",
+    "lint": "next lint && yarn runlint:stylelint",
     "lint:stylelint": "stylelint '**/*.css' --cache",
     "jest": "jest",
     "jest:watch": "jest --watch",
     "prettier:check": "prettier --check \"**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
-    "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest",
+    "test": "yarn runprettier:check && yarn runlint && yarn runtypecheck && yarn runjest",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "i18n": "i18nexus pull -p public/messages && node ./scripts/fix-i18n.js"
   },
   "dependencies": {
     "@mantine/core": "7.5.1",
     "@mantine/hooks": "7.5.1",
     "@next/bundle-analyzer": "^14.0.1",
     "@tabler/icons-react": "^2.47.0",
+    "cookies-next": "^4.1.1",
+    "country-flag-icons": "^1.5.9",
+    "get-user-locale": "^2.3.1",
     "next": "14.0.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-intl": "^6.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
@@ -55,6 +60,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^6.1.0",
+    "i18nexus-cli": "^3.3.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.31",
