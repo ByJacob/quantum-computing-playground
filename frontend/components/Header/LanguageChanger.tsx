@@ -4,12 +4,13 @@ import { getUserLocales } from 'get-user-locale';
 import { useSetState } from '@mantine/hooks';
 import { getCookie, setCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
+import { useIntl } from 'react-intl';
 import i18nConfig from '@/i18nConfig';
+import { COOKIE_LOCALE_KEY } from '@/components/constrants';
 
-export const COOKIE_LOCALE_KEY = 'browser-locale';
-
-export default function LanguageChanger() {
+export function LanguageChanger() {
   const router = useRouter();
+  const intl = useIntl();
   const iconProps = {
     style: { width: rem(16), height: rem(16) },
     stroke: '2.5',
@@ -40,8 +41,8 @@ export default function LanguageChanger() {
     getBrowserLanguage();
   }
 
-  const usIcon = <US title="Angielski" {...iconProps} />;
-  const plIcon = <PL title="Angielski" {...iconProps} />;
+  const usIcon = <US title={intl.formatMessage({ id: 'english' })} {...iconProps} />;
+  const plIcon = <PL title={intl.formatMessage({ id: 'polish' })} {...iconProps} />;
 
   const data = [
     { label: usIcon, value: 'en' },

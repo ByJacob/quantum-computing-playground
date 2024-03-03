@@ -2,21 +2,21 @@
 
 import { AppShell as MantineAppShell } from '@mantine/core';
 import { IntlProvider } from 'react-intl';
-import { useLocalStorage } from '@mantine/hooks';
 import { Header } from '../Header';
 import { NavBar } from '../NavBar';
 
 interface AppShellProps {
+  locale: string,
   navBarIntlMessages: any,
+  defaultIntlMessages: any,
   children: React.ReactNode
 }
 
-export function AppShell({ navBarIntlMessages, children } : AppShellProps) {
-  const [value, setValue] = useLocalStorage({
-    key: 'locale',
-    defaultValue: '',
-  });
-
+export function AppShell({
+  locale,
+  navBarIntlMessages,
+  defaultIntlMessages, children,
+} : AppShellProps) {
   return (
     <MantineAppShell
       header={{ height: 60 }}
@@ -27,11 +27,13 @@ export function AppShell({ navBarIntlMessages, children } : AppShellProps) {
       padding="md"
     >
       <MantineAppShell.Header>
-        <Header />
+        <IntlProvider messages={defaultIntlMessages} locale={locale}>
+          <Header />
+        </IntlProvider>
       </MantineAppShell.Header>
 
       <MantineAppShell.Navbar p="md">
-        <IntlProvider messages={navBarIntlMessages} locale="en">
+        <IntlProvider messages={navBarIntlMessages} locale={locale}>
           <NavBar />
         </IntlProvider>
       </MantineAppShell.Navbar>

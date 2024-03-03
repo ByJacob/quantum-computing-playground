@@ -2,7 +2,7 @@ import { Center, Grid, Image, useComputedColorScheme } from '@mantine/core';
 import NextImage from 'next/image';
 import { ColorToggle } from './ColorToggle';
 import pageLogo from '@/public/logo.svg';
-import LanguageChanger from './LanguageChanger';
+import { LanguageChanger } from './LanguageChanger';
 
 export function Header() {
   const computedColorScheme = useComputedColorScheme();

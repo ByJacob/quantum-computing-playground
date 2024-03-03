@@ -1,28 +1,28 @@
 import '@mantine/core/styles.css';
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
-import { cookies } from 'next/headers';
-import { getCookie } from 'cookies-next';
 import { theme } from '../theme';
 import { AppShell } from '@/components/AppShell/AppShell';
 import getIntl from './intl';
-import { COOKIE_LOCALE_KEY } from '@/components/Header/LanguageChanger';
 
-export const metadata = {
-  title: 'Mantine Next.js template',
-  description: 'I am using Mantine with Next.js!',
-};
+export async function generateMetadata() {
+  return {
+    title: {
+      template: '%s | QCP',
+      default: 'Quantum Computing Playground', // a default is required when creating a template
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const browseLocale = getCookie(COOKIE_LOCALE_KEY, { cookies }) !== undefined ? getCookie(COOKIE_LOCALE_KEY, { cookies }) : 'en';
-  const navIntl = await getIntl(browseLocale, 'navbar');
-
+  const navIntl = await getIntl('navbar');
+  const defaultIntl = await getIntl('default');
   return (
-    <html lang={browseLocale}>
+    <html lang={navIntl.locale}>
       <head>
         <ColorSchemeScript />
         <link rel="shortcut icon" href="/favicon.svg" />
@@ -33,7 +33,12 @@ export default async function RootLayout({
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="dark">
-          <AppShell navBarIntlMessages={navIntl.messages}>{children}</AppShell>
+          <AppShell
+            locale={navIntl.locale}
+            navBarIntlMessages={navIntl.messages}
+            defaultIntlMessages={defaultIntl.messages}
+          >{children}
+          </AppShell>
         </MantineProvider>
       </body>
     </html>

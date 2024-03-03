@@ -1,8 +1,10 @@
 import { MantineColorScheme, SegmentedControl, Tooltip, rem, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { IconMoonStars, IconSun, IconSettingsAutomation } from '@tabler/icons-react';
+import { useIntl } from 'react-intl';
 
 export function ColorToggle() {
   const theme = useMantineTheme();
+  const intl = useIntl();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
   const iconProps = {
     style: { width: rem(16), height: rem(16) },
@@ -10,7 +12,7 @@ export function ColorToggle() {
   };
 
   const sunIcon = (
-    <Tooltip label="Jasny">
+    <Tooltip label={intl.formatMessage({ id: 'light' })}>
       <IconSun
         color={theme.colors.yellow[4]}
         {...iconProps}
@@ -28,7 +30,7 @@ export function ColorToggle() {
   );
 
   const moonIcon = (
-    <Tooltip label="Ciemny">
+    <Tooltip label={intl.formatMessage({ id: 'dark' })}>
       <IconMoonStars
         color={theme.colors.blue[6]}
         {...iconProps}
