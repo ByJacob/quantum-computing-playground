@@ -3,7 +3,7 @@
 import { Canvas } from '@react-three/fiber';
 import { CameraControls, CubeCamera, OrbitControls, OrthographicCamera } from '@react-three/drei';
 
-function Scene(texture) {
+function Scene() {
   return (
     <>
       <mesh>
