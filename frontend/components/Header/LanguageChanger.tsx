@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useIntl } from 'react-intl';
 import i18nConfig from '@/i18nConfig';
 import { COOKIE_LOCALE_KEY } from '@/components/constrants';
+import { useEffect } from 'react';
 
 export function LanguageChanger() {
   const router = useRouter();
@@ -29,7 +30,11 @@ export function LanguageChanger() {
   }
 
   function getBrowserLanguage() {
-    const browseLocale = getUserLocales({ fallbackLocale: 'en' }).find(element => i18nConfig.locales.includes(element));
+    if (value.locale !== undefined) {
+      return;
+    }
+    const acceptLanguages = getUserLocales({ fallbackLocale: 'en' }).map((lang) => lang.toLocaleLowerCase().split('-')).flat();
+    const browseLocale = acceptLanguages.find(element => i18nConfig.locales.includes(element));
     if (browseLocale) {
       onChangeLanguage(browseLocale);
     } else {
@@ -37,9 +42,7 @@ export function LanguageChanger() {
     }
   }
 
-  if (value === undefined) {
-    getBrowserLanguage();
-  }
+  useEffect(() => getBrowserLanguage(), []);
 
   const usIcon = <US title={intl.formatMessage({ id: 'english' })} {...iconProps} />;
   const plIcon = <PL title={intl.formatMessage({ id: 'polish' })} {...iconProps} />;

@@ -5,7 +5,7 @@ import pageLogo from '@/public/logo.svg';
 import { LanguageChanger } from './LanguageChanger';
 
 export function Header() {
-  const computedColorScheme = useComputedColorScheme();
+  const colorScheme = useComputedColorScheme('light');
   return (
     <>
       <Grid
@@ -28,7 +28,7 @@ export function Header() {
               src={pageLogo}
               h={45}
               w="auto"
-              style={{ filter: computedColorScheme === 'dark' ? 'invert(100%)' : 'none' }}
+              style={{ filter: colorScheme === 'dark' ? 'invert(100%)' : 'none' }}
               alt="Logo"
               m={5}
             />

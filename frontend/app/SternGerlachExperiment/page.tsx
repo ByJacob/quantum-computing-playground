@@ -1,4 +1,5 @@
 import getIntl from '@/app/intl';
+import { SternGerlachExperiment } from '@/components/SternGerlachExperiment';
 
 async function pageIntl() {
   const navIntl = await getIntl('stern-gerlach');
@@ -16,6 +17,7 @@ export default function HomePage() {
   return (
     <>
       <p>Stern Gerlach Experiment</p>
+      <SternGerlachExperiment />
     </>
   );
 }
