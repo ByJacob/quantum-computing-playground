@@ -5,7 +5,6 @@ import { Extrude, OrbitControls, PerspectiveCamera, Text } from '@react-three/dr
 import { useMemo } from 'react';
 import * as THREE from 'three';
 import { useComputedColorScheme, useMantineTheme } from '@mantine/core';
-import { Props as TextProps } from '@react-three/drei/core/Text';
 
 interface SceneColors {
   block: string
@@ -15,6 +14,15 @@ interface SceneColors {
 
 interface BoxProps {
   colors: SceneColors
+}
+
+interface TestProps {
+  textAlign?: 'left' | 'right' | 'center' | 'justify';
+  fontSize?: number;
+  lineHeight?: number;
+  maxWidth?: number;
+  letterSpacing?: number;
+  font?: string;
 }
 
 function SourceBox() {
@@ -85,7 +93,7 @@ function MagnesiumBox({ colors }: BoxProps) {
     []
   );
 
-  const textProperties: TextProps = {
+  const textProperties: TestProps = {
     fontSize: 6,
     maxWidth: 100,
     lineHeight: 1,
@@ -97,10 +105,10 @@ function MagnesiumBox({ colors }: BoxProps) {
   return (
     <>
       <Extrude args={[shapeBottom, extrudeBottomSettings]}>
-        <meshNormalMaterial color={colors.block} />
+        <meshStandardMaterial color={colors.block} />
       </Extrude>
       <Extrude args={[shapeUp, extrudeUpSettings]} position={[0, height, 0]}>
-        <meshNormalMaterial color={colors.block} />
+        <meshStandardMaterial color={colors.block} />
       </Extrude>
       <Text
         color={colors.s_letter}
