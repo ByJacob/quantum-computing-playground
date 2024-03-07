@@ -5,6 +5,7 @@ import { Extrude, Line, OrbitControls, PerspectiveCamera, Text } from '@react-th
 import { useMemo } from 'react';
 import * as THREE from 'three';
 import { useComputedColorScheme, useMantineTheme } from '@mantine/core';
+import { ControlsStates } from './Model';
 
 const source_height = 20;
 const source_lenght = 20;
@@ -37,6 +38,10 @@ interface TestProps {
   maxWidth?: number;
   letterSpacing?: number;
   font?: string;
+}
+
+interface AnimationProps {
+  controlStates: ControlsStates
 }
 
 function SourceBox({ colors }: BoxProps) {
@@ -266,17 +271,17 @@ function Scene({ magnesiums } : SceneProps) {
   );
 }
 
-export function Animation() {
+export function Animation({ controlStates }: AnimationProps) {
   const magnesium_1 = {
     col: 1,
     row: 0,
-    rotate: Math.PI / 9,
+    rotate: controlStates.object1aRad,
   } as MagnesiumPosition;
 
   const magnesium_2 = {
     col: 2,
     row: 2,
-    rotate: Math.PI / 9,
+    rotate: controlStates.object2aRad,
   } as MagnesiumPosition;
 
   const magnesium_3 = {
