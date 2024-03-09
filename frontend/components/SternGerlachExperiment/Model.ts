@@ -1,14 +1,15 @@
-export enum MagnesiumName {
-  '1A',
-  '2A',
-  '2B',
-}
+export const MagnesiumName = {
+  A1: 'A1',
+  B1: 'B1',
+  B2: 'B2',
+} as const;
 
-export interface ControlsStates {
-  object1aEnable: boolean,
-  object1aRad: number,
-  object2aEnable: boolean,
-  object2aRad: number,
-  object2bEnable: boolean,
-  object2bRad: number,
-}
+export type MagnesiumName = typeof MagnesiumName[keyof typeof MagnesiumName];
+
+export type ControlsStates = {
+  [K in MagnesiumName]: {
+    enable: boolean;
+    name: string
+    rotateRad: number;
+  };
+};

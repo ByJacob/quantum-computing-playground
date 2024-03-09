@@ -4,24 +4,22 @@ import { Card, Grid, Text, Slider, Switch, rem } from '@mantine/core';
 import { ControlsStates, MagnesiumName } from './Model';
 
 interface MagnesiumPanelProps {
-  label: string
-  controlEnabled: boolean
-  onChangeEnable: (value: boolean) => void
-  valueRad: number
-  onChangeRad: (value: number) => void
+  magnesiumKey: MagnesiumName
+  states: ControlsStates
+  onChangeEnable: (magnesiumKey: MagnesiumName, value: boolean) => void
+  onChangeRad: (magnesiumKey: MagnesiumName, value: number) => void
 }
 
 interface ControlPanelProps {
   controlStates: ControlsStates
-  onChangeRad: (key: MagnesiumName, value: number) => void
-  onChangeEnable: (key: MagnesiumName, value: boolean) => void
+  onChangeRad: (magnesiumKey: MagnesiumName, value: number) => void
+  onChangeEnable: (magnesiumKey: MagnesiumName, value: boolean) => void
 }
 
 function MagnesiumPanel({
-  label,
-  controlEnabled,
+  magnesiumKey,
+  states,
   onChangeEnable,
-  valueRad,
   onChangeRad,
 } : MagnesiumPanelProps) {
   const styles = {
@@ -29,6 +27,7 @@ function MagnesiumPanel({
       paddingTop: rem(10),
     },
   };
+  const label = states[magnesiumKey].name;
 
   return (
     <Card padding="sm" withBorder>
@@ -38,8 +37,8 @@ function MagnesiumPanel({
       <Grid align="center" styles={styles}>
         <Grid.Col span="content">
           <Switch
-            checked={controlEnabled}
-            onChange={(event) => onChangeEnable(event.currentTarget.checked)}
+            checked={states[magnesiumKey].enable}
+            onChange={(event) => onChangeEnable(magnesiumKey, event.currentTarget.checked)}
             size="md"
             onLabel="ON"
             offLabel="OFF"
@@ -51,9 +50,9 @@ function MagnesiumPanel({
             pb="sm"
             min={0}
             max={360}
-            disabled={!controlEnabled}
-            defaultValue={(180 * valueRad) / Math.PI}
-            onChange={(value) => onChangeRad((value * Math.PI) / 180)}
+            disabled={!states[magnesiumKey].enable}
+            defaultValue={(180 * states[magnesiumKey].rotateRad) / Math.PI}
+            onChange={(value) => onChangeRad(magnesiumKey, (value * Math.PI) / 180)}
             label={(value) => `${value} °`}
             marks={[
               { value: 90, label: '90 °' },
@@ -72,33 +71,29 @@ export function ControlPanel({
   onChangeRad,
   onChangeEnable,
 }: ControlPanelProps) {
+  const defaultProps = {
+    states: controlStates,
+    onChangeRad,
+    onChangeEnable,
+  };
   return (
     <Grid>
       <Grid.Col span={4}>
         <MagnesiumPanel
-          label="Object 1A"
-          controlEnabled={controlStates.object1aEnable}
-          valueRad={controlStates.object1aRad}
-          onChangeRad={(value) => onChangeRad(MagnesiumName['1A'], value)}
-          onChangeEnable={(value) => onChangeEnable(MagnesiumName['1A'], value)}
+          magnesiumKey={MagnesiumName.A1}
+          {...defaultProps}
         />
       </Grid.Col>
       <Grid.Col span={4}>
         <MagnesiumPanel
-          label="Object 2A"
-          controlEnabled={controlStates.object2aEnable}
-          valueRad={controlStates.object2aRad}
-          onChangeRad={(value) => onChangeRad(MagnesiumName['2A'], value)}
-          onChangeEnable={(value) => onChangeEnable(MagnesiumName['2A'], value)}
+          magnesiumKey={MagnesiumName.B1}
+          {...defaultProps}
         />
       </Grid.Col>
       <Grid.Col span={4}>
         <MagnesiumPanel
-          label="Object 2B"
-          controlEnabled={controlStates.object2bEnable}
-          valueRad={controlStates.object2bRad}
-          onChangeRad={(value) => onChangeRad(MagnesiumName['2B'], value)}
-          onChangeEnable={(value) => onChangeEnable(MagnesiumName['2B'], value)}
+          magnesiumKey={MagnesiumName.B2}
+          {...defaultProps}
         />
       </Grid.Col>
     </Grid>

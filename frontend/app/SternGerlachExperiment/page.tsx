@@ -13,11 +13,12 @@ export async function generateMetadata() {
   };
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const intl = await pageIntl();
   return (
     <>
       <p>Stern Gerlach Experiment</p>
-      <SternGerlachExperiment />
+      <SternGerlachExperiment messages={intl.messages} locale={intl.locale}/>
     </>
   );
 }

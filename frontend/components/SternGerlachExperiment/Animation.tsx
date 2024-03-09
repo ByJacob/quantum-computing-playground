@@ -2,10 +2,10 @@
 
 import { Canvas } from '@react-three/fiber';
 import { Extrude, Line, OrbitControls, PerspectiveCamera, Text } from '@react-three/drei';
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import * as THREE from 'three';
 import { useComputedColorScheme, useMantineTheme } from '@mantine/core';
-import { ControlsStates } from './Model';
+import { ControlsStates, MagnesiumName } from './Model';
 
 const source_height = 20;
 const source_lenght = 20;
@@ -21,14 +21,8 @@ interface BoxProps {
   colors: SceneColors
 }
 
-interface MagnesiumPosition {
-  col: 1 | 2 | 3
-  row: -3 | -2 | -1 | 0 | 1 | 2 | 3
-  rotate: number
-}
-
 interface SceneProps {
-  magnesiums: MagnesiumPosition[]
+  states: ControlsStates
 }
 
 interface TestProps {
@@ -190,7 +184,7 @@ function MagnesiumBox({ colors }: BoxProps) {
 }
 
 // https://discourse.threejs.org/t/extruded-shape-with-hole-missing-inside-mesh/42401
-function Scene({ magnesiums } : SceneProps) {
+function Scene({ states } : SceneProps) {
   const theme = useMantineTheme();
 
   const colors_dark: SceneColors = {
@@ -209,36 +203,66 @@ function Scene({ magnesiums } : SceneProps) {
 
   const colors = useComputedColorScheme() === 'light' ? colors_light : colors_dark;
 
-  const distance = 40;
-  const next_angle = Math.PI / 9;
+  const distance = 50;
+  const next_angle = 0.43;
 
-  const render_magnesiums = magnesiums.map((magnesium) => {
-    let previus_level;
-    if (magnesium.col === 2) {
-      [previus_level] = magnesiums.filter((m) => m.col === 1);
-    } else if (magnesium.col === 3 && magnesium.row > 0) {
-      [previus_level] = magnesiums.filter((m) => m.col === 2 && m.row === 2);
-    } else if (magnesium.col === 3 && magnesium.row < 0) {
-      [previus_level] = magnesiums.filter((m) => m.col === 2 && m.row === -2);
+  const items: ReactNode[] = [];
+
+  (Object.keys(states) as MagnesiumName[]).forEach((key: MagnesiumName) => {
+    const currentState = states[key];
+    if (!currentState.enable) {
+      return;
     }
-    const previous_rotation = previus_level ? previus_level.rotate : 0;
+
+    let previous_rotation = 0;
+    let level = 1;
+    let upParameter = 1;
+    let isNextUp = false;
+    let isNextDown = false;
+
+    switch (key) {
+      case MagnesiumName.A1:
+        if (MagnesiumName.B1 in states && states[MagnesiumName.B1].enable) {
+          isNextUp = true;
+        }
+        if (MagnesiumName.B2 in states && states[MagnesiumName.B2].enable) {
+          isNextDown = true;
+        }
+        break;
+      case MagnesiumName.B1:
+        previous_rotation = states[MagnesiumName.A1].rotateRad;
+        level = 2;
+        break;
+      case MagnesiumName.B2:
+        previous_rotation = states[MagnesiumName.A1].rotateRad;
+        level = 2;
+        upParameter = -1;
+        break;
+    }
+
     const path_point_next = (source_height / 2) / Math.tan(next_angle);
     const path_points: [number, number, number][] = [
       [0, 0, -distance + (source_height / 4)],
-      [0, 0, source_lenght / 4],
-      [0, source_height / 2, source_lenght / 4 + path_point_next],
-      [0, 0, source_lenght / 4],
-      [0, -source_height / 2, source_lenght / 4 + path_point_next],
+      [0, 0, source_lenght / 2.2],
     ];
-    const rotate_x = -next_angle * Math.cos(previous_rotation) * (magnesium.col - 1);
-    const rorate_z = -next_angle * Math.sin(previous_rotation) * (magnesium.col - 1);
-    const rotate_y = magnesium.rotate + previous_rotation;
+    if (!isNextUp) {
+      path_points.push([0, source_height / 2, source_lenght / 4 + path_point_next]);
+      path_points.push(path_points[1]);
+    }
+    if (!isNextDown) {
+      path_points.push([0, -source_height / 2, source_lenght / 4 + path_point_next]);
+    }
+    const rotate_x = -next_angle * Math.cos(previous_rotation) * (level - 1) * upParameter;
+    const rorate_z = -next_angle * -Math.sin(previous_rotation) * (level - 1) * upParameter;
+    const rotate_y = currentState.rotateRad + previous_rotation;
+
     const position_x = 0 +
-      -(magnesium.col - 1) * (Math.sin(previous_rotation) * (source_height / (Math.PI / 2)));
+      (level - 1) * Math.sin(previous_rotation) * (source_height / (Math.PI / 2)) * upParameter;
     const position_z = source_height / 2 +
-      (magnesium.col - 1) * (Math.cos(previous_rotation) * (source_height / (Math.PI / 2)));
-    const position_y = distance * magnesium.col;
-    return (
+      (level - 1) * Math.cos(previous_rotation) * (source_height / (1.065)) * upParameter;
+    const position_y = distance * level;
+
+    items.push(
       <mesh
         position={[position_x, position_z, position_y]}
         rotation={[rotate_x, rorate_z, rotate_y]}
@@ -262,7 +286,7 @@ function Scene({ magnesiums } : SceneProps) {
       <mesh position={[0, 0, 0]}>
         <SourceBox colors={colors} />
       </mesh>
-      {render_magnesiums}
+      { items }
       {/* <mesh position={[10, 1, 0]}>
         <boxGeometry />
         <meshStandardMaterial />
@@ -272,29 +296,10 @@ function Scene({ magnesiums } : SceneProps) {
 }
 
 export function Animation({ controlStates }: AnimationProps) {
-  const magnesium_1 = {
-    col: 1,
-    row: 0,
-    rotate: controlStates.object1aRad,
-  } as MagnesiumPosition;
-
-  const magnesium_2 = {
-    col: 2,
-    row: 2,
-    rotate: controlStates.object2aRad,
-  } as MagnesiumPosition;
-
-  const magnesium_3 = {
-    col: 3,
-    row: 1,
-    rotate: Math.PI / 9,
-  } as MagnesiumPosition;
-
-  const magnesiums = [magnesium_1, magnesium_2, magnesium_3];
 
   return (
     <Canvas>
-      <Scene magnesiums={magnesiums} />
+      <Scene states={controlStates} />
       <gridHelper args={[1000, 100]} />
       <PerspectiveCamera
         makeDefault
