@@ -215,6 +215,7 @@ function Scene({ states } : SceneProps) {
     }
 
     let previous_rotation = 0;
+    let previous_rotation2 = 0;
     let level = 1;
     let upParameter = 1;
     let isNextUp = false;
@@ -232,35 +233,71 @@ function Scene({ states } : SceneProps) {
       case MagnesiumName.B1:
         previous_rotation = states[MagnesiumName.A1].rotateRad;
         level = 2;
+        if (MagnesiumName.C1 in states && states[MagnesiumName.C1].enable) {
+          isNextUp = true;
+        }
+        if (MagnesiumName.C2 in states && states[MagnesiumName.C2].enable) {
+          isNextDown = true;
+        }
         break;
       case MagnesiumName.B2:
         previous_rotation = states[MagnesiumName.A1].rotateRad;
         level = 2;
         upParameter = -1;
+        if (MagnesiumName.C3 in states && states[MagnesiumName.C3].enable) {
+          isNextUp = true;
+        }
+        if (MagnesiumName.C4 in states && states[MagnesiumName.C4].enable) {
+          isNextDown = true;
+        }
+        break;
+      case MagnesiumName.C1:
+        previous_rotation = states[MagnesiumName.B1].rotateRad;
+        previous_rotation2 = states[MagnesiumName.A1].rotateRad;
+        level = 3;
         break;
     }
 
     const path_point_next = (source_height / 2) / Math.tan(next_angle);
     const path_points: [number, number, number][] = [
-      [0, 0, -distance + (source_height / 4)],
+      [0, 0, -distance + (source_lenght / 2)],
       [0, 0, source_lenght / 2.2],
     ];
     if (!isNextUp) {
-      path_points.push([0, source_height / 2, source_lenght / 4 + path_point_next]);
+      path_points.push([0, source_height / 2, source_lenght / 2.2 + path_point_next]);
       path_points.push(path_points[1]);
     }
     if (!isNextDown) {
-      path_points.push([0, -source_height / 2, source_lenght / 4 + path_point_next]);
+      path_points.push([0, -source_height / 2, source_lenght / 2.2 + path_point_next]);
     }
-    const rotate_x = -next_angle * Math.cos(previous_rotation) * (level - 1) * upParameter;
-    const rorate_z = -next_angle * -Math.sin(previous_rotation) * (level - 1) * upParameter;
-    const rotate_y = currentState.rotateRad + previous_rotation;
+    let rotate_x = 0;
+    let rorate_z = 0;
+    const rotate_y = currentState.rotateRad + previous_rotation + previous_rotation2;
 
-    const position_x = 0 +
-      (level - 1) * Math.sin(previous_rotation) * (source_height / (Math.PI / 2)) * upParameter;
-    const position_z = source_height / 2 +
-      (level - 1) * Math.cos(previous_rotation) * (source_height / (1.065)) * upParameter;
-    const position_y = distance * level;
+    let position_x = 0;
+    let position_z = source_height / 2;
+    let position_y = distance;
+
+    if (level === 2) {
+      rotate_x += -next_angle * Math.cos(previous_rotation) * upParameter;
+      rorate_z += -next_angle * Math.sin(previous_rotation) * upParameter;
+      position_x += -1 * Math.sin(previous_rotation) * (source_height / (1.2)) * upParameter;
+      position_z += Math.cos(previous_rotation) * (source_height / (1.2)) * upParameter;
+      position_y += Math.cos(next_angle) * distance;
+    }
+
+    if (level === 3) {
+      rotate_x += -next_angle * Math.cos(previous_rotation2) +
+        -next_angle * Math.cos(previous_rotation + previous_rotation2) * upParameter;
+      rorate_z += -next_angle * Math.sin(previous_rotation2) * upParameter +
+        -next_angle * Math.sin(previous_rotation + previous_rotation2) * upParameter;
+      position_x += -1 * Math.sin(previous_rotation) * (source_height / (1.2)) +
+              Math.sin(previous_rotation2) * (source_height / (1.2)) * upParameter;
+      position_z += Math.cos(previous_rotation) * (source_height / (1.2)) +
+        Math.cos(previous_rotation2) * (source_height / (1.2)) * upParameter;
+      position_y += Math.cos(next_angle) * distance + (Math.cos(next_angle * 2)
+        * (distance * 1.04));
+    }
 
     items.push(
       <mesh
@@ -301,6 +338,7 @@ export function Animation({ controlStates }: AnimationProps) {
     <Canvas>
       <Scene states={controlStates} />
       <gridHelper args={[1000, 100]} />
+      <axesHelper position={[50,5,0]} args={[30]} />
       <PerspectiveCamera
         makeDefault
         position={[60, 30, 0]}

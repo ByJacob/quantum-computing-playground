@@ -13,23 +13,37 @@ interface SternGerlachExperimentProps {
 }
 
 export function SternGerlachExperiment({ messages, locale } : SternGerlachExperimentProps) {
+  const placeholder = {
+    enable: true,
+    name: '',
+    rotateRad: 0,
+  };
   const defaultState: ControlsStates = {
     [MagnesiumName.A1]: {
       enable: true,
       name: `${messages.magnesium} A1`,
       rotateRad: 0,
     },
-    [MagnesiumName.B1]: {
-      enable: false,
-      name: `${messages.magnesium} B1`,
-      rotateRad: 0,
-    },
-    [MagnesiumName.B2]: {
-      enable: false,
-      name: `${messages.magnesium} B2`,
-      rotateRad: 0,
-    },
+    B1: placeholder,
+    B2: placeholder,
+    C1: placeholder,
+    C2: placeholder,
+    C3: placeholder,
+    C4: placeholder,
   };
+
+  Object.keys(MagnesiumName).forEach(key => {
+    if (key === MagnesiumName.A1) {
+      return;
+    }
+    const value = MagnesiumName[key as keyof typeof MagnesiumName];
+    defaultState[key as keyof typeof MagnesiumName] = {
+      enable: false,
+      name: `${messages.magnesium} ${value}`,
+      rotateRad: 0,
+    };
+  });
+
   const [state, setState] = useSetState(defaultState);
 
   (Object.keys(defaultState) as MagnesiumName[]).forEach((key: MagnesiumName) => {

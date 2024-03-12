@@ -8,6 +8,7 @@ interface MagnesiumPanelProps {
   states: ControlsStates
   onChangeEnable: (magnesiumKey: MagnesiumName, value: boolean) => void
   onChangeRad: (magnesiumKey: MagnesiumName, value: number) => void
+  switchSize: string
 }
 
 interface ControlPanelProps {
@@ -21,6 +22,7 @@ function MagnesiumPanel({
   states,
   onChangeEnable,
   onChangeRad,
+  switchSize,
 } : MagnesiumPanelProps) {
   const styles = {
     col: {
@@ -38,8 +40,9 @@ function MagnesiumPanel({
         <Grid.Col span="content">
           <Switch
             checked={states[magnesiumKey].enable}
+            disabled={magnesiumKey === MagnesiumName.A1}
             onChange={(event) => onChangeEnable(magnesiumKey, event.currentTarget.checked)}
-            size="md"
+            size={switchSize}
             onLabel="ON"
             offLabel="OFF"
           />
@@ -66,6 +69,17 @@ function MagnesiumPanel({
   );
 }
 
+function isC(key: MagnesiumName) {
+  switch (key) {
+    case MagnesiumName.C1:
+    case MagnesiumName.C2:
+    case MagnesiumName.C3:
+    case MagnesiumName.C4:
+      return true;
+  }
+  return false;
+}
+
 export function ControlPanel({
   controlStates,
   onChangeRad,
@@ -78,24 +92,17 @@ export function ControlPanel({
   };
   return (
     <Grid>
-      <Grid.Col span={4}>
-        <MagnesiumPanel
-          magnesiumKey={MagnesiumName.A1}
-          {...defaultProps}
-        />
-      </Grid.Col>
-      <Grid.Col span={4}>
-        <MagnesiumPanel
-          magnesiumKey={MagnesiumName.B1}
-          {...defaultProps}
-        />
-      </Grid.Col>
-      <Grid.Col span={4}>
-        <MagnesiumPanel
-          magnesiumKey={MagnesiumName.B2}
-          {...defaultProps}
-        />
-      </Grid.Col>
+      {
+        Object.keys(MagnesiumName).map(key =>
+          <Grid.Col span={isC(key as keyof typeof MagnesiumName) ? 3 : 4}>
+            <MagnesiumPanel
+              magnesiumKey={key as keyof typeof MagnesiumName}
+              switchSize={isC(key as keyof typeof MagnesiumName) ? 'xs' : 'md'}
+              {...defaultProps}
+            />
+          </Grid.Col>
+        )
+      }
     </Grid>
   );
 }
