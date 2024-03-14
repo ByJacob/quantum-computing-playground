@@ -204,7 +204,7 @@ function Scene({ states } : SceneProps) {
   const colors = useComputedColorScheme() === 'light' ? colors_light : colors_dark;
 
   const distance = 50;
-  const next_angle = 0.43;
+  const next_angle = 0.55;
 
   const items: ReactNode[] = [];
 
@@ -252,23 +252,24 @@ function Scene({ states } : SceneProps) {
         }
         break;
       case MagnesiumName.C1:
-        previous_rotation = states[MagnesiumName.B1].rotateRad;
-        previous_rotation2 = states[MagnesiumName.A1].rotateRad;
+        previous_rotation = states[MagnesiumName.A1].rotateRad;
+        previous_rotation2 = states[MagnesiumName.B1].rotateRad;
         level = 3;
         break;
     }
 
-    const path_point_next = (source_height / 2) / Math.tan(next_angle);
+    const path_height_next = source_height / 1.2;
+    const path_point_next = path_height_next / Math.tan(next_angle);
     const path_points: [number, number, number][] = [
       [0, 0, -distance + (source_lenght / 2)],
       [0, 0, source_lenght / 2.2],
     ];
     if (!isNextUp) {
-      path_points.push([0, source_height / 2, source_lenght / 2.2 + path_point_next]);
+      path_points.push([0, path_height_next, source_lenght / 2.2 + path_point_next]);
       path_points.push(path_points[1]);
     }
     if (!isNextDown) {
-      path_points.push([0, -source_height / 2, source_lenght / 2.2 + path_point_next]);
+      path_points.push([0, -path_height_next, source_lenght / 2.2 + path_point_next]);
     }
     let rotate_x = 0;
     let rorate_z = 0;
@@ -278,25 +279,28 @@ function Scene({ states } : SceneProps) {
     let position_z = source_height / 2;
     let position_y = distance;
 
-    if (level === 2) {
+    if (level >= 2) {
+      const level_distance = distance * 1.014;
+      const level_height = distance * Math.sin(next_angle) * 0.8;
       rotate_x += -next_angle * Math.cos(previous_rotation) * upParameter;
       rorate_z += -next_angle * Math.sin(previous_rotation) * upParameter;
-      position_x += -1 * Math.sin(previous_rotation) * (source_height / (1.2)) * upParameter;
-      position_z += Math.cos(previous_rotation) * (source_height / (1.2)) * upParameter;
-      position_y += Math.cos(next_angle) * distance;
+      position_x += -1 * Math.sin(previous_rotation) * level_height * upParameter;
+      position_z += Math.cos(previous_rotation) * level_height * upParameter;
+      position_y += Math.cos(next_angle) * level_distance;
     }
 
-    if (level === 3) {
-      rotate_x += -next_angle * Math.cos(previous_rotation2) +
-        -next_angle * Math.cos(previous_rotation + previous_rotation2) * upParameter;
-      rorate_z += -next_angle * Math.sin(previous_rotation2) * upParameter +
-        -next_angle * Math.sin(previous_rotation + previous_rotation2) * upParameter;
-      position_x += -1 * Math.sin(previous_rotation) * (source_height / (1.2)) +
-              Math.sin(previous_rotation2) * (source_height / (1.2)) * upParameter;
-      position_z += Math.cos(previous_rotation) * (source_height / (1.2)) +
-        Math.cos(previous_rotation2) * (source_height / (1.2)) * upParameter;
-      position_y += Math.cos(next_angle) * distance + (Math.cos(next_angle * 2)
-        * (distance * 1.04));
+    if (level >= 3) {
+      const level_distance = distance * 1.014;
+      const level_height = distance * Math.sin(next_angle * 2) * 0.8;
+      rotate_x += -next_angle * Math.cos(previous_rotation + previous_rotation2) * upParameter;
+      rorate_z += -next_angle * Math.sin(previous_rotation + previous_rotation2) * upParameter;
+      position_x +=
+        (Math.sin(previous_rotation) * (-level_height) * upParameter)
+        + Math.sin(previous_rotation + previous_rotation2) * (-level_height / 2) * upParameter;
+      position_z +=
+        (Math.cos(previous_rotation) * (level_height / 2) * upParameter)
+        + Math.cos(previous_rotation + previous_rotation2) * (level_height / 2) * upParameter;
+      position_y += Math.cos(next_angle * 2) * level_distance;
     }
 
     items.push(
@@ -333,12 +337,11 @@ function Scene({ states } : SceneProps) {
 }
 
 export function Animation({ controlStates }: AnimationProps) {
-
   return (
     <Canvas>
       <Scene states={controlStates} />
       <gridHelper args={[1000, 100]} />
-      <axesHelper position={[50,5,0]} args={[30]} />
+      <axesHelper position={[50, 5, 0]} args={[30]} />
       <PerspectiveCamera
         makeDefault
         position={[60, 30, 0]}
