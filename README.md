@@ -5,7 +5,6 @@ Project made in the competition [https://100commitow.pl/](https://100commitow.pl
 
 Webpage url [quantum-computing-playground.vercel.app](https://quantum-computing-playground.vercel.app)
 
-
 ## Tech stack
 
 - [React](https://react.dev/learn)
