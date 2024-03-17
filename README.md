@@ -7,6 +7,8 @@ Webpage url [quantum-computing-playground.vercel.app](https://quantum-computing-
 
 ## Tech stack
 
+
+
 - [React](https://react.dev/learn)
 - [Next.js App Router](https://nextjs.org/docs/app)
 - [Mantine](https://mantine.dev/getting-started/)
